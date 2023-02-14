@@ -1,0 +1,113 @@
+---
+title: ''
+output: html_document
+date: "2023-02-13"
+---
+```{r libraries, message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+library(magrittr)
+
+```
+
+```{r dataset}
+#Import the dataset
+salaries_data = read_csv("Dataset/salaries.csv")
+
+attach(salaries_data)
+```
+
+```{r}
+#Which role has the highest salary employment wise?
+high_salary = salaries_data %>%
+  group_by(job_title) %>%
+  summarise(AVG_Salary = mean(salary_in_usd)) %>%
+  arrange(desc(AVG_Salary)) 
+
+high_salary
+```
+
+
+```{r}
+#Which employment types do employers prefer to hire?
+  salaries_data %>% 
+  count(employment_type)
+```
+
+
+```{r}
+#Which role and employment type are entry level candidates generally hired for?
+role_type = salaries_data %>%
+  group_by(job_title) %>%
+  summarise(AVG_Salary = mean(salary_in_usd)) %>%
+  arrange(desc(AVG_Salary)) 
+
+```
+
+
+```{r}
+#WFH vs WFO?
+wfh = salaries_data %>% 
+  count(remote_ratio) 
+```
+
+
+```{r}
+
+#Which countries pay the highest for which roles?
+high_salary_country = salaries_data %>%
+  group_by(company_location) %>%
+  summarise(AVG_Salary = mean(salary_in_usd)) %>%
+  arrange(desc(AVG_Salary)) 
+
+```
+
+
+```{r}
+#Employee demographics
+count_countries = salaries_data %>% 
+  count(employee_residence) %>% 
+  arrange(desc(count_countries$n))
+  
+```
+
+
+```{r message=FALSE, warning=FALSE}
+#which experience level has the highest hiring?
+experience_level_1 = salaries_data %>% 
+  count(experience_level) %>% 
+  arrange(desc(experience_level_1$n))
+```
+
+
+```{r}
+#Does company size affect the payscale?
+company_size_payscale = salaries_data %>%
+  group_by(company_size) %>%
+  summarise(AVG_Salary = mean(salary_in_usd)) %>%
+  arrange(desc(AVG_Salary)) 
+
+
+qhpvt(salaries_data,"company_size", "experience_level", " round(mean(salary_in_usd),3)")
+```
+
+```{r}
+#YoY salary growth at different experience levels
+
+year_wise = salaries_data %>%
+  group_by(work_year) %>%
+  summarise(AVG_Salary = mean(salary_in_usd)) %>%
+  arrange(desc(AVG_Salary)) 
+
+
+```
+
+
+```{r}
+#How does a company hire employees based on demographics?
+employee_demographics = salaries_data %>% 
+  count(employee_residence) %>% 
+  arrange(desc(employee_demographics$n))
+
+```
+
